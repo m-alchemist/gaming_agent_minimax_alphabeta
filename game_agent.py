@@ -10,8 +10,10 @@ class SearchTimeout(Exception):
     pass
 
 
-
 def custom_score(game, player):
+    return custom_score_3(game,player);
+
+def custom_score_1(game, player):
 
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
@@ -336,7 +338,7 @@ class AlphaBetaPlayer(IsolationPlayer):
 
             except SearchTimeout:
                 pass  # Handle any actions required after timeout as needed
-            
+
             return best_move
 
 
