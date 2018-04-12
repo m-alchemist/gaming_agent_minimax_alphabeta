@@ -10,10 +10,8 @@ class SearchTimeout(Exception):
     pass
 
 
-def custom_score(game, player):
-    return custom_score_3(game,player);
 
-def custom_score_1(game, player):
+def custom_score(game, player):
 
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
@@ -238,8 +236,10 @@ class MinimaxPlayer(IsolationPlayer):
 
             # TODO: finish this function!
 
-        best_move=None
+        best_move=(-1,-1)
         best_score=float("-inf")
+        if game.get_legal_moves():
+            best_move= game.get_legal_moves()[0]
 
         for move in game.get_legal_moves():
 
@@ -255,7 +255,7 @@ class MinimaxPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         if self.terminal_test(game):
-            return float("inf")
+            return  self.score(game, self)
         if depth==0:
             return self.score(game,self)
         v=float("inf")
@@ -266,7 +266,7 @@ class MinimaxPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
         if self.terminal_test(game):
-            return float("-inf")
+            return  self.score(game, self)
         if depth<=0:
             return self.score(game,self)
         v=float("-inf")
@@ -327,6 +327,9 @@ class AlphaBetaPlayer(IsolationPlayer):
             try:
                 # The try/except block will automatically catch the exception
                 # raised when the timer is about to expire.
+
+                #implementing itterative deepening
+
                 if self.iterative:
                     for depth in range(1, game.width  *game.height):
                         best_move=self.alphabeta(game,depth)
@@ -384,9 +387,10 @@ class AlphaBetaPlayer(IsolationPlayer):
 
 
         # TODO: finish this function!
-        best_move=None
+        best_move=(-1,-1)
         best_score=float("-inf")
-
+        if game.get_legal_moves():
+             best_move= game.get_legal_moves()[0]
 
         for move in game.get_legal_moves():
             v=self.max_value(game.forecast_move(move),depth-1, alpha,beta)
@@ -404,7 +408,7 @@ class AlphaBetaPlayer(IsolationPlayer):
         if self.time_left()<self.TIMER_THRESHOLD:
             raise SearchTimeout()
         if self.terminal_test(game):
-            return float("-inf")
+            return self.score(game, self)
 
         if depth<=0:
             return self.score(game,self)
@@ -424,7 +428,7 @@ class AlphaBetaPlayer(IsolationPlayer):
         if self.time_left()<self.TIMER_THRESHOLD:
             raise SearchTimeout()
         if self.terminal_test(game):
-            return float("inf")
+            return self.score(game, self)
 
         if depth<=0:
             return self.score(game,self)
