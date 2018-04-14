@@ -39,7 +39,7 @@ def custom_score(game, player):
         return float("inf")
     player_moves=len(game.get_legal_moves(player))
     opponent_moves=len(game.get_legal_moves(game.get_opponent(player)))
-    return float(player_moves-2*opponent_moves)
+    return float(player_moves-1.5*opponent_moves)
 
 
 
@@ -79,7 +79,7 @@ def custom_score_2(game, player):
     if opponent_moves == 0:
         return float("inf")
 
-    return float(player_moves/opponent_moves)
+    return float(player_moves/(opponent_moves))
 
 
 
@@ -110,7 +110,7 @@ def custom_score_3(game, player):
         return float("inf")
     player_moves=len(game.get_legal_moves(player))
     opponent_moves=len(game.get_legal_moves(game.get_opponent(player)))
-    return float(player_moves*player_moves-2*opponent_moves*opponent_moves)
+    return float(player_moves*player_moves-1.5*opponent_moves*opponent_moves)
 
 
 
@@ -248,7 +248,7 @@ class MinimaxPlayer(IsolationPlayer):
                 best_score=v
                 best_move=move
 
-        print("best Move: ", best_move)
+
         return best_move
 
     def min_value(self,game, depth):
@@ -258,7 +258,7 @@ class MinimaxPlayer(IsolationPlayer):
 
         """if self.terminal_test(game):
             return  self.score(game, self)"""
-        if depth<=0 or not game.get_legal_moves():
+        if depth==0or not game.get_legal_moves():
             return self.score(game,self)
         v=float("inf")
         for move in game.get_legal_moves():
@@ -268,7 +268,7 @@ class MinimaxPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        if depth<=0 or not game.get_legal_moves():
+        if depth==0or not game.get_legal_moves():
             return self.score(game,self)
         v=float("-inf")
         for move in game.get_legal_moves():
@@ -394,7 +394,7 @@ class AlphaBetaPlayer(IsolationPlayer):
              best_move= game.get_legal_moves()[0]
 
         for move in game.get_legal_moves():
-            v=self.max_value(game.forecast_move(move),depth-1, alpha,beta)
+            v=self.min_value(game.forecast_move(move),depth-1, alpha,beta)
             # if v>=beta:
             #     return move
             alpha=max(alpha, v)
@@ -410,7 +410,7 @@ class AlphaBetaPlayer(IsolationPlayer):
             raise SearchTimeout()
         # if self.terminal_test(game):
         #     return self.score(game, self)
-        if depth<=0 or not game.get_legal_moves():
+        if depth==0or not game.get_legal_moves():
             return self.score(game,self)
 
         v=float("-inf")
@@ -427,7 +427,7 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         if self.time_left()<self.TIMER_THRESHOLD:
             raise SearchTimeout()
-        if depth<=0 or not game.get_legal_moves():
+        if depth==0or not game.get_legal_moves():
             return self.score(game,self)
 
         v=float("inf")
