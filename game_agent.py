@@ -258,7 +258,7 @@ class MinimaxPlayer(IsolationPlayer):
 
         """if self.terminal_test(game):
             return  self.score(game, self)"""
-        if depth==0or not game.get_legal_moves():
+        if depth==0 or not game.get_legal_moves():
             return self.score(game,self)
         v=float("inf")
         for move in game.get_legal_moves():
@@ -268,7 +268,7 @@ class MinimaxPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        if depth==0or not game.get_legal_moves():
+        if depth==0 or not game.get_legal_moves():
             return self.score(game,self)
         v=float("-inf")
         for move in game.get_legal_moves():
@@ -332,8 +332,11 @@ class AlphaBetaPlayer(IsolationPlayer):
                 #implementing itterative deepening
 
                 # if self.iterative:
-                for depth in range(1, game.width  *game.height):
+                depth=1
+                while True:
                     best_move=self.alphabeta(game,depth)
+                    depth+=1
+
                 #
                 # else:
                 #     best_move=self.alphabeta(game,self.search_depth)
@@ -410,7 +413,7 @@ class AlphaBetaPlayer(IsolationPlayer):
             raise SearchTimeout()
         # if self.terminal_test(game):
         #     return self.score(game, self)
-        if depth==0or not game.get_legal_moves():
+        if depth==0 or not game.get_legal_moves():
             return self.score(game,self)
 
         v=float("-inf")
@@ -427,7 +430,7 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         if self.time_left()<self.TIMER_THRESHOLD:
             raise SearchTimeout()
-        if depth==0or not game.get_legal_moves():
+        if depth==0 or not game.get_legal_moves():
             return self.score(game,self)
 
         v=float("inf")
